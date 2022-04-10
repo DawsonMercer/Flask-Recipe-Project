@@ -38,8 +38,19 @@ def pick_random():
 
     # todo add random page html
     random_recipe_name = random.choice(recipe_list)
-    return render_template("random.html", recipe_list=recipe_list)
+    index = recipe_list.index(random_recipe_name)
+
+    return render_template("random.html", recipe_list=recipe_list, index=index)
 
 @app.route("/log-in")
 def log_in():
     return render_template("login.html")
+
+@app.route("/json")
+def json():
+    return render_template("json.html")
+
+@app.route("/background_process_test")
+def background_process_test():
+    print("hello")
+    return("nothing")
