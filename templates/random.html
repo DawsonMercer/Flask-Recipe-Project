@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Recipe Picker</title>
+</head>
+<body>
+    <h1>Random Recipe Picker</h1>
+    <h3>Unsure what to have for supper tonight? Let us pick for you!</h3>
+
+    <button id="randomButton">Click for Recipe!</button>
+    {% set random_recipe = recipe_list|random %}
+<!--    todo add link to randomly generated recipe -->
+        <h3>random recipe is {{ random_recipe }}</h3>
+    <br>
+    <a href="{{ url_for('main_page') }}">Go Home</a>
+
+</body>
+</html>
