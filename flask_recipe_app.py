@@ -4,8 +4,8 @@ import random
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
-recipe_list = []
-recipe_dict = {}
+# recipe_list = []
+# recipe_dict = {}
 
 
 #venv\Scripts\activate
@@ -16,16 +16,19 @@ recipe_dict = {}
 
 @app.route("/")
 def main_page():
-    read_csv()
+    recipe_list, recipe_dict = read_csv()
     return render_template("index.html")
 
 
 @app.route("/view-all")
 def view_all():
+    recipe_list, recipe_dict = read_csv()
     return render_template("viewAll.html", recipe_list=recipe_list)
 
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
+    # todo fix upload new recipe
+    recipe_list, recipe_dict = read_csv()
     if(recipe_name in recipe_list):
         current_recipe = recipe_dict[recipe_name]
         ingredients = current_recipe[2].split("-")
@@ -38,7 +41,7 @@ def recipe(recipe_name):
 
 @app.route("/pick-random")
 def pick_random():
-    # todo add random page html
+    recipe_list, recipe_dict = read_csv()
     random_recipe_name = random.choice(recipe_list)
     index = recipe_list.index(random_recipe_name)
 
@@ -48,8 +51,40 @@ def pick_random():
 def log_in():
     return render_template("login.html")
 
+
+app.config["UPLOAD_PATH"] = "static/images"
+@app.route("/upload-recipe", methods=["GET", "POST"])
+# @app.route("/upload-recipe")
+def upload_recipe():
+    if request.method == "POST":
+
+        recipe_name = request.form.get("recipe_name")
+        description = request.form.get("description")
+        recipe_ingredients = request.form.get("recipe_ingredients")
+        prepare = request.form.get("prepare")
+        servings = request.form.get("servings")
+        # print(recipe_name,description,recipe_ingredients,servings)
+        uploaded_file = request.files["recipe_image"]
+        if uploaded_file.filename != "":
+            uploaded_file.save(os.path.join(app.config["UPLOAD_PATH"], uploaded_file.filename))
+            # fixme it adds double csv file i am unsure exactly what is happening here
+            recipe_list, recipe_dict = read_csv()
+
+            recipe_dict[recipe_name] = [description, uploaded_file.filename, recipe_ingredients, prepare, servings]
+            recipe_list.append(recipe_name)
+            with open("recipes.csv", "w", newline="") as file:
+                writer = csv.writer(file)
+                for key, value in recipe_dict.items():
+                    writer.writerow([key, value[0], value[1], value[2], value[3], value[4]])
+        return redirect(url_for("main_page"))
+    else:
+        return render_template("upload_recipe.html")
+
+
 def read_csv():
     recipe_images = []
+    recipe_list = []
+    recipe_dict = {}
     with open("recipes.csv", newline="") as file:
         reader = csv.reader(file)
         # print(recipe_dict)
@@ -58,3 +93,6 @@ def read_csv():
             recipe_list.append(row[0])
             print(recipe_list)
             print(recipe_dict)
+        return recipe_list, recipe_dict
+
+

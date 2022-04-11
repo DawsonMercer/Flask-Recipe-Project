@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Recipe</title>
+</head>
+<body>
+    <h2>Upload your very own recipe:</h2>
+    <form id="recipe_form" action="{{ url_for('upload_recipe') }}" enctype="multipart/form-data" method="post">
+        <input type="text" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
+        <span>*</span><br>
+
+        <input type="text" name="description" id="description" placeholder="Enter a short description">
+        <span>*</span><br>
+
+        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">
+        <span>*</span><br>
+
+        <input type="text" name="prepare" id="prepare" placeholder="How to prepare?">
+        <span>*</span><br>
+
+        <input type="text" name="servings" id="servings" placeholder="Enter servings">
+        <span>*</span><br>
+
+        <input type="file" name="recipe_image" id="recipe_image">
+        <span>*</span><br>
+
+        <input type="button" id="submitButton" value="Submit recipe">
+
+    </form>
+    <script src="../static/js/validateForm.js"></script>
+</body>
+</html>
