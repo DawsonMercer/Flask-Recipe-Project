@@ -7,23 +7,29 @@
 <body>
     <h2>Upload your very own recipe:</h2>
     <form id="recipe_form" action="{{ url_for('upload_recipe') }}" enctype="multipart/form-data" method="post">
+        <label>Recipe Name:</label>
         <input type="text" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
-        <span>*</span><br>
+        <span>*</span><br><br>
 
+        <label>Description:</label>
         <input type="text" name="description" id="description" placeholder="Enter a short description">
-        <span>*</span><br>
+        <span>*</span><br><br>
 
-        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">
-        <span>*</span><br>
+        <label>List ingredients:</label>
+        <textarea name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'"></textarea>
+<!--        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">-->
+        <span>*</span><br><br>
 
+        <label>Prep instructions:</label>
         <input type="text" name="prepare" id="prepare" placeholder="How to prepare?">
-        <span>*</span><br>
+        <span>*</span><br><br>
 
+        <label>Server Size:</label>
         <input type="text" name="servings" id="servings" placeholder="Enter servings">
-        <span>*</span><br>
+        <span>*</span><br><br>
 
         <input type="file" name="recipe_image" id="recipe_image">
-        <span>*</span><br>
+        <span>*</span><br><br>
 
         <input type="button" id="submitButton" value="Submit recipe">
 

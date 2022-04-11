@@ -9,16 +9,9 @@
     <h3>Click on the recipe you wish to remove:</h3>
     <ul>
     {% for recipe in recipe_list %}
-        <li>{{ recipe.title() }}</li>
+        <li>{{ recipe.title() }} - <a href="/delete/{{ recipe }}"> Delete</a></li>
     {% endfor %}
     </ul>
-    <form id="remove_form">
-        <h3>Enter name of recipe you wish to remove:</h3>
-        <input type="text" id="recipe_to_remove">
-        <button type="submit" value="Remove Recipe">
-    </form>
-
-
     <br>
     <a href="{{url_for('main_page')}}">Home Page</a>
 </body>

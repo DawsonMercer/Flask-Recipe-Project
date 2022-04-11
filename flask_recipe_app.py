@@ -2,7 +2,7 @@ import csv
 import os
 import random
 from flask import Flask, render_template, request, redirect, url_for
-
+# TODO HASH PASSOWRDS
 app = Flask(__name__)
 # recipe_list = []
 # recipe_dict = {}
@@ -47,7 +47,7 @@ def pick_random():
     random_recipe_name = random.choice(recipe_list)
     index = recipe_list.index(random_recipe_name)
 
-    return render_template("random.html", recipe_list=recipe_list, index=index)
+    return render_template("random.html", recipe_list=recipe_list, index=index, recipe_dict=recipe_dict)
 
 @app.route("/log-in")
 def log_in():
@@ -74,10 +74,7 @@ def upload_recipe():
 
             recipe_dict[recipe_name] = [description, uploaded_file.filename, recipe_ingredients, prepare, servings]
             recipe_list.append(recipe_name)
-            with open("recipes.csv", "w", newline="") as file:
-                writer = csv.writer(file)
-                for key, value in recipe_dict.items():
-                    writer.writerow([key, value[0], value[1], value[2], value[3], value[4]])
+            write_csv(recipe_dict)
         return redirect(url_for("main_page"))
     else:
         return render_template("upload_recipe.html")
@@ -87,6 +84,30 @@ def upload_recipe():
 def remove_recipe():
     recipe_list, recipe_dict = read_csv()
     return render_template("remove_recipe.html", recipe_list=recipe_list)
+
+@app.route("/delete/<recipe>")
+def delete(recipe):
+    recipe_list, recipe_dict = read_csv()
+    print("recipe to delete is", recipe)
+    print("recipe list", recipe_list)
+    print("recipe dict", recipe_dict)
+    try:
+        if recipe in recipe_list and recipe in recipe_dict:
+            remove = recipe_list.index(recipe)
+            recipe_list.pop(remove)
+            del recipe_dict[recipe]
+            write_csv(recipe_dict)
+
+        return redirect(url_for("remove_recipe"))
+    except:
+        return "Trouble deleting recipe. Try again."
+
+
+def write_csv(recipe_dict):
+    with open("recipes.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        for key, value in recipe_dict.items():
+            writer.writerow([key, value[0], value[1], value[2], value[3], value[4]])
 
 
 def read_csv():

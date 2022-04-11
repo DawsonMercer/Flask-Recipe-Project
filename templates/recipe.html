@@ -14,7 +14,7 @@
     <h3>What You'll Need:</h3>
     <ul>
         {% for item in ingredients %}
-            <li>{{ item }}</li>
+            <li>{{ item| capitalize }}</li>
         {% endfor %}
     </ul>
     <br>

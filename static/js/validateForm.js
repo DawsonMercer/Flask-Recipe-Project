@@ -4,7 +4,7 @@ const $ = selector => document.querySelector(selector);
 
 
 const validateForm =() =>{
-    const name = $("#recipe_name").value.trim();
+    const name = $("#recipe_name").value.trim().toLowerCase();
     const description = $("#description");
     const ingredients = $("#recipe_ingredients");
     const prepare = $("#prepare");
