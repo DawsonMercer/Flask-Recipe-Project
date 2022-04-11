@@ -38,8 +38,6 @@ def recipe(recipe_name):
 
 @app.route("/pick-random")
 def pick_random():
-    recipe_list = ["applepie", "smoothie", "salad"]
-
     # todo add random page html
     random_recipe_name = random.choice(recipe_list)
     index = recipe_list.index(random_recipe_name)
