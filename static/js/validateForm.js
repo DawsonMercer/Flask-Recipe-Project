@@ -4,20 +4,27 @@ const $ = selector => document.querySelector(selector);
 
 
 const validateForm =() =>{
-    const name = $("#recipe_name");
-    const image = $("#recipe_image");
+    const name = $("#recipe_name").value.trim();
     const description = $("#description");
     const ingredients = $("#recipe_ingredients");
-    const servings = $("#servings");
     const prepare = $("#prepare");
+    const servings = $("#servings");
+    const image = $("#recipe_image");
 
     let formIsComplete = true;
-    if(name.value === ""){
+    if(name === ""){
         name.nextElementSibling.textContent = "Required section.";
         formIsComplete = false;
-        alert("Enter name");
     }else{
-        name.nextElementSibling.textContent = "*";
+        $("#recipe_name").nextElementSibling.textContent = "*";
+    }
+    $("#recipe_name").value= name;
+
+    if(description.value === ""){
+        description.nextElementSibling.textContent = "Required section.";
+        formIsComplete = false;
+    }else{
+        description.nextElementSibling.textContent = "*";
     }
     if(image.value === ""){
         image.nextElementSibling.textContent = "Required section.";
@@ -25,12 +32,8 @@ const validateForm =() =>{
     }else{
         image.nextElementSibling.textContent = "*";
     }
-    if(description.value === ""){
-        description.nextElementSibling.textContent = "Required section.";
-        formIsComplete = false;
-    }else{
-        description.nextElementSibling.textContent = "*";
-    }
+
+
     if(ingredients.value === ""){
         ingredients.nextElementSibling.textContent = "Required section.";
         formIsComplete = false;
@@ -53,13 +56,13 @@ const validateForm =() =>{
     if(formIsComplete === true){
         $("#recipe_form").submit();
         alert("Your recipe has been submitted");
+    }else {
+        alert("Please complete form.")
     }
 
 };
 
 document.addEventListener("DOMContentLoaded",()=>{
     $("#submitButton").addEventListener("click", validateForm);
-    alert("DOM");
-    console.log("ERRORRRR");
 
 });

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remove Recipe</title>
+</head>
+<body>
+    <h1>Remove a recipe</h1>
+    <h3>Click on the recipe you wish to remove:</h3>
+    <ul>
+    {% for recipe in recipe_list %}
+        <li>{{ recipe.title() }}</li>
+    {% endfor %}
+    </ul>
+    <form id="remove_form">
+        <h3>Enter name of recipe you wish to remove:</h3>
+        <input type="text" id="recipe_to_remove">
+        <button type="submit" value="Remove Recipe">
+    </form>
+
+
+    <br>
+    <a href="{{url_for('main_page')}}">Home Page</a>
+</body>
+</html>

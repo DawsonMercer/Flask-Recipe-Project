@@ -23,12 +23,14 @@ def main_page():
 @app.route("/view-all")
 def view_all():
     recipe_list, recipe_dict = read_csv()
+    print(recipe_list)
+    print(recipe_dict)
     return render_template("viewAll.html", recipe_list=recipe_list)
 
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
-    # todo fix upload new recipe
     recipe_list, recipe_dict = read_csv()
+    print(recipe_list)
     if(recipe_name in recipe_list):
         current_recipe = recipe_dict[recipe_name]
         ingredients = current_recipe[2].split("-")
@@ -79,6 +81,12 @@ def upload_recipe():
         return redirect(url_for("main_page"))
     else:
         return render_template("upload_recipe.html")
+
+
+@app.route("/remove-recipe")
+def remove_recipe():
+    recipe_list, recipe_dict = read_csv()
+    return render_template("remove_recipe.html", recipe_list=recipe_list)
 
 
 def read_csv():
