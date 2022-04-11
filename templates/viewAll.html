@@ -6,6 +6,10 @@
 </head>
 <body>
     <h1>List of all recipes</h1>
+    {% for recipe in recipe_list %}
+        <li><a href="/recipe/{{recipe}}">{{ recipe.title() }}</a></li>
+    {% endfor %}
+    <ul></ul>
     <a href="{{url_for('main_page')}}">Home Page</a>
 </body>
 </html>

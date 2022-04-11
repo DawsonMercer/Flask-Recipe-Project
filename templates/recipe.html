@@ -6,30 +6,23 @@
 </head>
 <body>
     <h1>{{ recipe_name.title() }} - Recipe</h1>
-    <p id="description"><strong>Here is a short description of the {{ recipe_name.title() }}.</strong></p>
-    <img src="/static/images/general.jpg" width="400" height="200">
+    <p id="description"><strong>{{ recipe_name.title() }} Description: {{ current_recipe[0] }}</strong></p>
+    <img src="/static/images/{{ current_recipe[1]}}" width="400" height="200">
     <br>
     <a href="{{url_for('main_page')}}">Home</a>
 
     <h3>What You'll Need:</h3>
     <ul>
-        <li>First item</li>
-        <li>Second item</li>
-        <li>Third item</li>
+        {% for item in ingredients %}
+            <li>{{ item }}</li>
+        {% endfor %}
     </ul>
-
+    <br>
     <h3>Prep Instructions</h3>
-    <ul>
-        <li>Step 1</li>
-        <li>Step 2</li>
-        <li>Step 3</li>
-    </ul>
+    <p>{{ current_recipe[3] }}</p>
 
     <h3>Serving Instructions</h3>
-    <ul>
-        <li>Serves 2-4 people</li>
-        <li>Put on plate</li>
-    </ul>
+    <p>{{ current_recipe[4] }}</p>
 
 </body>
 </html>

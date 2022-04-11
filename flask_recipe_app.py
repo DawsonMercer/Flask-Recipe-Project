@@ -4,6 +4,9 @@ import random
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+recipe_list = []
+recipe_dict = {}
+
 
 #venv\Scripts\activate
 #$env:FLASK_APP = "flask_recipe_app"
@@ -13,21 +16,22 @@ app = Flask(__name__)
 
 @app.route("/")
 def main_page():
+    read_csv()
     return render_template("index.html")
 
 
 @app.route("/view-all")
 def view_all():
-    return render_template("viewAll.html")
+    return render_template("viewAll.html", recipe_list=recipe_list)
 
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
-
-    recipe_list = ["applepie", "smoothie", "salad"]
-    # todo if recipe_name exists in csv, display recipe. else error
-
     if(recipe_name in recipe_list):
-        return render_template("recipe.html", recipe_name=recipe_name)
+        current_recipe = recipe_dict[recipe_name]
+        ingredients = current_recipe[2].split("-")
+
+        print("current recipe", current_recipe)
+        return render_template("recipe.html", recipe_name=recipe_name, current_recipe=current_recipe, ingredients=ingredients)
     else:
         return render_template("error.html")
 
@@ -46,11 +50,13 @@ def pick_random():
 def log_in():
     return render_template("login.html")
 
-@app.route("/json")
-def json():
-    return render_template("json.html")
-
-@app.route("/background_process_test")
-def background_process_test():
-    print("hello")
-    return("nothing")
+def read_csv():
+    recipe_images = []
+    with open("recipes.csv", newline="") as file:
+        reader = csv.reader(file)
+        # print(recipe_dict)
+        for row in reader:
+            recipe_dict[row[0]] = [row[1], row[2], row[3], row[4], row[5]]
+            recipe_list.append(row[0])
+            print(recipe_list)
+            print(recipe_dict)
