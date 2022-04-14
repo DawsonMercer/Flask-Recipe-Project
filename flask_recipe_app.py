@@ -3,6 +3,7 @@ import os
 import random
 from flask import Flask, render_template, request, redirect, url_for
 # TODO HASH PASSOWRDS
+# TODO ADD LOG IN FEATURE sql?
 app = Flask(__name__)
 # recipe_list = []
 # recipe_dict = {}
@@ -51,6 +52,7 @@ def pick_random():
 
 @app.route("/log-in")
 def log_in():
+    # add functionality and redirect to main page for log in
     return render_template("login.html")
 
 
