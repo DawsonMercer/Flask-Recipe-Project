@@ -28,6 +28,34 @@ def view_all():
     print(recipe_dict)
     return render_template("viewAll.html", recipe_list=recipe_list)
 
+@app.route("/next/<string:recipe_name>")
+def next_recipe(recipe_name):
+    recipe_list, recipe_dict = read_csv()
+    current_index = recipe_list.index(recipe_name)
+    if current_index+1 > len(recipe_list)-1:
+        current_index = 0
+        next_recipe = recipe_list[current_index]
+    else:
+        next_recipe = recipe_list[current_index+1]
+    current_recipe = recipe_dict[next_recipe]
+    ingredients = current_recipe[2].split("-")
+    return render_template("recipe.html", recipe_name=next_recipe, current_recipe=current_recipe, ingredients=ingredients)
+
+
+@app.route("/prev/<string:recipe_name>")
+def prev_recipe(recipe_name):
+    recipe_list, recipe_dict = read_csv()
+    current_index = recipe_list.index(recipe_name)
+    if current_index-1 < 0 :
+        current_index = len(recipe_list)-1
+        prev_recipe = recipe_list[current_index]
+    else:
+        prev_recipe = recipe_list[current_index-1]
+    current_recipe = recipe_dict[prev_recipe]
+    ingredients = current_recipe[2].split("-")
+    return render_template("recipe.html", recipe_name=prev_recipe, current_recipe=current_recipe, ingredients=ingredients)
+
+
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
     recipe_list, recipe_dict = read_csv()

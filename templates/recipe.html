@@ -10,6 +10,9 @@
     <img src="/static/images/{{ current_recipe[1]}}" width="400" height="200">
     <br>
     <a href="{{url_for('main_page')}}">Home</a>
+    <a href="{{url_for('view_all')}}">View All</a>
+    <a href="/prev/{{ recipe_name }}">Prev</a>
+    <a href="/next/{{ recipe_name }}">Next</a>
 
     <h3>What You'll Need:</h3>
     <ul>
