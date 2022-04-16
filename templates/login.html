@@ -6,17 +6,16 @@
 </head>
 <body>
     <h1>Log-In</h1>
-    <form id="log_in_form" action="{{ url_for('log_in') }}">
+    <form id="log_in_form" action="{{ url_for('log_in') }}" method="post">
         <p>Username:</p>
-        <input id="user" title="Username" type="text">
-        <p>Password:</p>
-        <input id="password" title="Password" type="password">
-        <button type="submit" id="submitButton">Log-in</button>
-    </form>
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form><br><br>
     <a href="{{ url_for('main_page') }}">Go Home</a>
-    <input type="button" id="clickMe" value="Clickme">
-    <script src="../static/js/log_in_validatation.js"></script>
-<!--todo add validation of users-->
+    <p>Don't have an account? <a href="{{ url_for('add_user') }}">Register Now</a></p>
+
 
 </body>
 </html>

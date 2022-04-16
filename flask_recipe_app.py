@@ -1,19 +1,118 @@
 import csv
 import os
 import random
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, ValidationError, Length
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from flask_bcrpyt import Bcrypt
+
 # TODO HASH PASSOWRDS
 # TODO ADD LOG IN FEATURE sql?
+# TODO ADD FILE VERIFICATION FOR PHOTO
 app = Flask(__name__)
 # recipe_list = []
 # recipe_dict = {}
-
 
 #venv\Scripts\activate
 #$env:FLASK_APP = "flask_recipe_app"
 # $env:FLASK_ENV = "development"
 #flask run
 
+# add Database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# secret key
+app.config['SECRET_KEY'] = 'my secret key'
+db = SQLAlchemy(app)
+
+# create a db model
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    # date_added = db.Column(db.DateTime, default=datetime.utcnow())
+    password = db.Column(db.String(80), nullable=False)
+
+    #creat a string
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
+
+@app.route('/delete/<int:id>')
+def delete_user(id):
+    user_to_delete = Users.query.get_or_404(id)
+    name = None
+    form = RegisterForm()
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User Deleted Sucessfully!")
+        our_users = Users.query.order_by(Users.id)
+        return render_template("add_user.html", form=form, name=name, our_users=our_users)
+    except:
+        flash("Error deleting User")
+        our_users = Users.query.order_by(Users.id)
+        return render_template("add_user.html", form=form, name=name, our_users=our_users)
+
+
+
+
+class RegisterForm(FlaskForm):
+    # todo add Email inside validators list
+    username = StringField("Email", validators=[DataRequired(), Length(min=4, max=20)])
+    password = PasswordField("Password", validators=[DataRequired(), Length(min=1, max=40)])
+    submit = SubmitField("Register")
+
+    def validate_username(self, username):
+        existing_user_username = Users.query.filter_by(username=username.data).first()
+
+        if existing_user_username:
+            raise ValidationError("That username already exists. Please choose another")
+
+class LogInForm(FlaskForm):
+    # todo add Email inside validators list
+    username = StringField("Email", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Login")
+
+
+# creat form class
+class NamerForm(FlaskForm):
+    name = StringField("Name:", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+@app.route("/user/add", methods=['GET', 'POST'])
+def add_user():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        # return a user if it exists in the database
+        user = Users.query.filter_by(username=form.username.data).first()
+        if user is None:
+            user = Users(username= form.username.data)
+            db.session.add(user)
+            print("++++++========\n$$$$$$$$$$$$$$\nUser Added")
+            db.session.commit()
+
+        form.username.data = ''
+        form.password.data = ''
+        flash("User Added")
+    our_users = Users.query.order_by(Users.id)
+    return render_template("add_user.html", form=form, name=name, our_users=our_users)
+
+# fixme remove this, jsut for testing
+@app.route("/name", methods=['GET', 'POST'])
+def name():
+    name = None
+    form = NamerForm()
+    # validate form
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+        flash("Successful account created")
+    return render_template("name.html", name=name, form=form)
 
 @app.route("/")
 def main_page():
@@ -78,11 +177,20 @@ def pick_random():
 
     return render_template("random.html", recipe_list=recipe_list, index=index, recipe_dict=recipe_dict)
 
-@app.route("/log-in")
-def log_in():
-    # add functionality and redirect to main page for log in
-    return render_template("login.html")
 
+@app.route("/log-in", methods=['GET', 'POST'])
+def log_in():
+    form = LogInForm()
+
+    # add functionality and redirect to main page for log in
+    return render_template("login.html", form=form)
+
+# TODO ADD FILE VERIFICATION FOR PHOTO
+# TODO ADD FILE VERIFICATION FOR PHOTO
+# TODO ADD FILE VERIFICATION FOR PHOTO
+# TODO ADD FILE VERIFICATION FOR PHOTO
+# TODO ADD FILE VERIFICATION FOR PHOTO
+# TODO ADD FILE VERIFICATION FOR PHOTO
 
 app.config["UPLOAD_PATH"] = "static/images"
 @app.route("/upload-recipe", methods=["GET", "POST"])

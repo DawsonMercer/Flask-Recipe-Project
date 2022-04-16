@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe for {{ recipe_name }}</title>
+    <link href="../static/styles/recipeStyles.css" rel="stylesheet">
 </head>
 <body>
     <h1>{{ recipe_name.title() }} - Recipe</h1>
     <p id="description"><strong>{{ recipe_name.title() }} Description: {{ current_recipe[0] }}</strong></p>
-    <img src="/static/images/{{ current_recipe[1]}}" width="400" height="200">
+    <img src="/static/images/{{ current_recipe[1]}}">
     <br>
     <a href="{{url_for('main_page')}}">Home</a>
     <a href="{{url_for('view_all')}}">View All</a>

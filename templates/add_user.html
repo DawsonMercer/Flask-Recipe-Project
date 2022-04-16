@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanks for Registering!</title>
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+<!--        fixme this is bootstrap to be added in later-->
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+    {% if name %}
+        <h1>Thanks for Registering!</h1>
+
+        <br>
+        <br>
+        <br>
+        <table class = "table table-dark table-hover table-striped">
+        {% for our_user in our_users %}
+            <tr><td>{{ our_user.id }}: {{ our_user.name }} - {{ our_user.email }}
+                <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
+        {% endfor %}
+        </table>
+        <a href="{{ url_for('main_page') }}">Go Home</a>
+        <a href="{{ url_for('add_user') }}">Add another user</a>
+    {% else %}
+        <h1>Add a User:</h1>
+        <br>
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <form method = "POST">
+                {{ form.hidden_tag() }}
+
+                {{ form.name.label }}
+
+                {{ form.name() }}
+                <br>
+                {{ form.email.label }}
+
+                {{ form.email() }}
+                <br>
+
+                {{ form.submit() }}
+            </form>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <table class = "table table-dark table-hover table-striped">
+        {% for our_user in our_users %}
+            <tr><td>{{ our_user.id }}: {{ our_user.name }} - {{ our_user.email }}
+            <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
+        {% endfor %}
+        </table><br><br>
+        <a href="{{ url_for('main_page') }}">Go Home</a>
+        <a href="{{ url_for('log_in') }}">Log-in</a>
+    {% endif %}
+</body>
+</html>

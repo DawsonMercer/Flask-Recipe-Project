@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+<!--        fixme this is bootstrap to be added in later-->
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+
+    {% if name %}
+        <h1>Hello {{ name }}!!</h1>
+    {% else %}
+        <h1>WHat is your name? Name page</h1>
+        <br>
+        <form method = "POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.name.label }}
+
+            {{ form.name() }}
+            <br>
+            {{ form.submit() }}
+        </form>
+
+    {% endif %}
+</body>
+</html>
