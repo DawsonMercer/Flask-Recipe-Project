@@ -5,6 +5,8 @@
     <title>Random Recipe Picker</title>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
     <h1>Random Recipe Picker</h1>
     <h3>Unsure what to have for supper tonight? Let us pick for you!</h3>
     <form>
@@ -19,6 +21,7 @@
         <h3>Random recipe: <a href="/recipe/{{random_recipe}}">{{ random_recipe.title() }}</a></h3>
     <br>
     <a href="{{ url_for('main_page') }}">Go Home</a>
+    {% endblock %}
 
 </body>
 </html>

@@ -3,16 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
+    <style>
+        #parallex-image{
+            background-image: url("static/images/flat-lay.jpg");
+            height: 500px;
+            margin-bottom: 50px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+        #parallex-image2{
+            background-image: url("static/images/general.jpg");
+            height: 500px;
+            margin-bottom: 50px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+        h1{
+            /*font-family: "Comic Sans MS", "Comic Sans", cursive;*/
+            font-size: 100px;
+
+        }
+        #dotted{
+        background-color: black;
+        color: #DB3540;
+        border-style: none;
+        border-top: 7px dotted;
+        width: 10%;
+        }
+    </style>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <div id = "parallex-image">
+        <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+                <h1 class="text-center">Welcome!</h1>
+<!--                <hr id="dotted">-->
+                <h3 class="text-center">- Sweets, Treats, and Eats -</h3>
+
+            </div>
+        </div>
+    </div>
+    <div class = "container">
+        <strong><p>Welcome to my recipe website. Feel free to browse recipes.</p>
+        <p>If you're indecisive and not sure what to cook tonight, check out our Random Recipe selector.</p>
+        <p>Feel free to upload your own recipe, or make an account!</p>
+        </strong>
+
+    </div>
     <h1>Recipe Home Page</h1>
     <h2>Welcome to dawson's page</h2>
-    <img src="static/images/general.jpg" width="500" height="250"><br>
+    <img src="static/images/general.jpg" width="800" height="400"><br>
 
     <a href="{{url_for('view_all')}}">View all recipes</a>
     <a href="{{url_for('pick_random')}}">Pick Random</a>
     <a href="{{url_for('login')}}">Log-in</a>
     <a href="{{url_for('upload_recipe')}}">Upload Recipe</a>
     <a href="{{url_for('remove_recipe')}}">Remove Recipe</a>
+
+    {% endblock %}
 </body>
 </html>

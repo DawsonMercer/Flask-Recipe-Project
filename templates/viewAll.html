@@ -3,13 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>All Recipes</title>
+    <style>
+        .containerPic {
+            position: relative;
+            /*width: 50%;*/
+             width:600px;
+             height:225px;
+        }
+
+        .image {
+            display: block;
+            /*width: 100%;*/
+            /*height: auto;*/
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 225px;
+          width: 600px;
+          opacity: 0;
+          transition: .5s ease;
+          background-color: #DB3540;
+        }
+
+        .containerPic:hover .overlay {
+          opacity: 1;
+        }
+
+        .recipeText {
+          color: white;
+          font-size: 50px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+    </style>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
     <h1>List of all recipes</h1>
+    <hr>
+    <ul class="list-group list-group-flush">
     {% for recipe in recipe_list %}
-        <li><a href="/recipe/{{recipe}}">{{ recipe.title() }}</a></li>
+        <li class="list-group-item mx-auto"><div class="containerPic">
+            <img src="static/images/{{ recipe_dict[recipe][1] }}" class="image rounded float-left" alt="..." width="600" height="225" style="object-fit: cover">
+            <a href="/recipe/{{recipe}}">
+                <div class="overlay">
+                <div class="recipeText">{{ recipe.title() }}</div>
+                </div>
+            </a>
+        </div>
+        </li>
     {% endfor %}
-    <ul></ul>
+    </ul>
+
     <a href="{{url_for('main_page')}}">Home Page</a>
+    {% endblock %}
 </body>
 </html>

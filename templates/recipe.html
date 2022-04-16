@@ -4,16 +4,36 @@
     <meta charset="UTF-8">
     <title>Recipe for {{ recipe_name }}</title>
     <link href="../static/styles/recipeStyles.css" rel="stylesheet">
+    <style>
+        /*.text-center{*/
+        /*    color: #DB3540;*/
+
+        /*}*/
+        .actionButtons{
+            display: inline;
+            margin-right: 100px;
+            margin-left:100px;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ recipe_name.title() }} - Recipe</h1>
-    <p id="description"><strong>{{ recipe_name.title() }} Description: {{ current_recipe[0] }}</strong></p>
-    <img src="/static/images/{{ current_recipe[1]}}">
+    {% extends 'base.html' %}
+    {% block content %}
+<!--    <h1>{{ recipe_name.title() }} - Recipe</h1>-->
+
+<!--    <img src="/static/images/{{ current_recipe[1]}}">-->
     <br>
-    <a href="{{url_for('main_page')}}">Home</a>
-    <a href="{{url_for('view_all')}}">View All</a>
-    <a href="/prev/{{ recipe_name }}">Prev</a>
-    <a href="/next/{{ recipe_name }}">Next</a>
+    <div id = "parallex-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.2)),url('/static/images/{{ current_recipe[1] }}');height: 375px;
+margin-bottom: 50px;background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;">
+        <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+                <h1 class="text-center" style="color: white;">{{recipe_name.title()}} - Recipe</h1>
+<!--                <hr id="dotted">-->
+                <h4 class="text-center" style="color: white;"><strong>{{ recipe_name.title() }} Description: {{ current_recipe[0] }}</strong></h4>
+
+            </div>
+        </div>
+    </div>
 
     <h3>What You'll Need:</h3>
     <ul>
@@ -27,6 +47,12 @@
 
     <h3>Serving Instructions</h3>
     <p>{{ current_recipe[4] }}</p>
+    <span style="display: table;margin: 0 auto;">
+        <a href="/prev/{{ recipe_name }}" class="actionButtons btn btn-outline-danger">Prev</a>
+        <a href="/next/{{ recipe_name }}" class="actionButtons btn btn-outline-danger">Next</a>
+    </span>
+
+    {% endblock %}
 
 </body>
 </html>

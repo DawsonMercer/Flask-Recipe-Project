@@ -137,7 +137,7 @@ def view_all():
     recipe_list, recipe_dict = read_csv()
     print(recipe_list)
     print(recipe_dict)
-    return render_template("viewAll.html", recipe_list=recipe_list)
+    return render_template("viewAll.html", recipe_list=recipe_list, recipe_dict=recipe_dict)
 
 @app.route("/next/<string:recipe_name>")
 def next_recipe(recipe_name):
