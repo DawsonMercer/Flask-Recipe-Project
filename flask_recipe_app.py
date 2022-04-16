@@ -7,13 +7,14 @@ from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, ValidationError, Length
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
-from flask_bcrpyt import Bcrypt
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_bcrypt import Bcrypt
 
 # TODO HASH PASSOWRDS
 # TODO ADD LOG IN FEATURE sql?
 # TODO ADD FILE VERIFICATION FOR PHOTO
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 # recipe_list = []
 # recipe_dict = {}
 
@@ -27,6 +28,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # secret key
 app.config['SECRET_KEY'] = 'my secret key'
 db = SQLAlchemy(app)
+# TODO THIS IS WHERE I LEFT OFF 24:14 IN THE VID - https://www.youtube.com/watch?v=71EU8gnZqZQ
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
 
 # create a db model
 class Users(db.Model, UserMixin):
@@ -88,19 +95,11 @@ class NamerForm(FlaskForm):
 def add_user():
     form = RegisterForm()
     if form.validate_on_submit():
-        # return a user if it exists in the database
-        user = Users.query.filter_by(username=form.username.data).first()
-        if user is None:
-            user = Users(username= form.username.data)
-            db.session.add(user)
-            print("++++++========\n$$$$$$$$$$$$$$\nUser Added")
-            db.session.commit()
-
-        form.username.data = ''
-        form.password.data = ''
-        flash("User Added")
-    our_users = Users.query.order_by(Users.id)
-    return render_template("add_user.html", form=form, name=name, our_users=our_users)
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        new_user = Users(username= form.username.data, password = hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('log_in'))
 
 # fixme remove this, jsut for testing
 @app.route("/name", methods=['GET', 'POST'])
