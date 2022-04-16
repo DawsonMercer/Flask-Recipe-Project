@@ -12,15 +12,16 @@
         </div>
 
     {% endfor %}
-    {% if name %}
+    {% if username %}
         <h1>Thanks for Registering!</h1>
 
         <br>
         <br>
         <br>
+        <p>table should print below here</p>
         <table class = "table table-dark table-hover table-striped">
         {% for our_user in our_users %}
-            <tr><td>{{ our_user.id }}: {{ our_user.name }} - {{ our_user.email }}
+            <tr><td>{{ our_user.id }}: - {{ our_user.username }}
                 <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
         {% endfor %}
         </table>
@@ -33,13 +34,13 @@
             <form method = "POST">
                 {{ form.hidden_tag() }}
 
-                {{ form.name.label }}
+                {{ form.username.label }}
 
-                {{ form.name() }}
+                {{ form.username() }}
                 <br>
-                {{ form.email.label }}
+                {{ form.password.label }}
 
-                {{ form.email() }}
+                {{ form.password() }}
                 <br>
 
                 {{ form.submit() }}
@@ -49,14 +50,15 @@
         <br>
         <br>
         <br>
+        <p>Current Usernames:</p>
         <table class = "table table-dark table-hover table-striped">
         {% for our_user in our_users %}
-            <tr><td>{{ our_user.id }}: {{ our_user.name }} - {{ our_user.email }}
-            <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
+            <tr><td>{{ our_user.id }}: {{ our_user.username }}</td></tr>
         {% endfor %}
         </table><br><br>
-        <a href="{{ url_for('main_page') }}">Go Home</a>
-        <a href="{{ url_for('log_in') }}">Log-in</a>
+        <a href="{{ url_for('main_page') }}">Go Home bbb</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('login') }}">Log-in</a>
     {% endif %}
 </body>
 </html>

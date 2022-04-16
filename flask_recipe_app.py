@@ -23,6 +23,13 @@ bcrypt = Bcrypt(app)
 # $env:FLASK_ENV = "development"
 #flask run
 
+#create a new db
+# python in terminal
+# from flask_recipe_all import db
+# db.create_all()
+# exit()
+
+
 # add Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # secret key
@@ -33,12 +40,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 
 # create a db model
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(100), nullable=False, unique=True)
     # date_added = db.Column(db.DateTime, default=datetime.utcnow())
     password = db.Column(db.String(80), nullable=False)
@@ -58,11 +67,11 @@ def delete_user(id):
         db.session.commit()
         flash("User Deleted Sucessfully!")
         our_users = Users.query.order_by(Users.id)
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
+        return render_template("add_user.html", form=form, our_users=our_users)
     except:
         flash("Error deleting User")
         our_users = Users.query.order_by(Users.id)
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
+        return render_template("add_user.html", form=form, our_users=our_users)
 
 
 
@@ -96,22 +105,26 @@ def add_user():
     form = RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
+        print(f"HASHED PAASWORD {hashed_password}")
         new_user = Users(username= form.username.data, password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('log_in'))
+        our_users = Users.query.order_by(Users.id)
+        return redirect(url_for("login"))
+    our_users = Users.query.order_by(Users.id)
+    return render_template("add_user.html", form=form, our_users=our_users)
 
 # fixme remove this, jsut for testing
-@app.route("/name", methods=['GET', 'POST'])
-def name():
-    name = None
-    form = NamerForm()
-    # validate form
-    if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-        flash("Successful account created")
-    return render_template("name.html", name=name, form=form)
+# @app.route("/name", methods=['GET', 'POST'])
+# def name():
+#     name = None
+#     form = NamerForm()
+#     # validate form
+#     if form.validate_on_submit():
+#         name = form.name.data
+#         form.name.data = ''
+#         flash("Successful account created")
+#     return render_template("name.html", name=name, form=form)
 
 @app.route("/")
 def main_page():
@@ -178,11 +191,30 @@ def pick_random():
 
 
 @app.route("/log-in", methods=['GET', 'POST'])
-def log_in():
+def login():
     form = LogInForm()
-
+    if form.validate_on_submit():
+        user = Users.query.filter_by(username = form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('dashboard'))
     # add functionality and redirect to main page for log in
     return render_template("login.html", form=form)
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    # username = db.session["username"]
+
+    our_users = Users.query.order_by(Users.id)
+    return render_template('dashboard.html', our_users=our_users)
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 # TODO ADD FILE VERIFICATION FOR PHOTO
 # TODO ADD FILE VERIFICATION FOR PHOTO
