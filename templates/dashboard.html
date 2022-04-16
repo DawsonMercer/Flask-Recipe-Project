@@ -5,21 +5,32 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Hi, you're logged in</h1>
-
-    <p>Delete Users Below:</p>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h1>Hi, {{ current }} you're logged in <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg btn-block">Log-out</a></h1>
+    <hr>
+    <br>
+    <h3>Delete Users Below:</h3>
     <table class = "table table-dark table-hover table-striped">
         {% for our_user in our_users %}
-            <tr><td>{{ our_user.id }}: - {{ our_user.username }}
-                <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
+            <tr><td>{{ our_user.id }} - {{ our_user.username }}
+                     <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
         {% endfor %}
         </table>
     <br>
+        <a href="{{ url_for('add_user') }}" class="btn btn-secondary">Add another user</a>
     <br>
     <br>
-        <a href="{{ url_for('main_page') }}">Go Home</a>
-        <a href="{{ url_for('add_user') }}">Add another user</a>
+    <br>
+    <h3>Remove a recipe</h3>
+    <h4>Click on the recipe you wish to remove:</h4>
+    <table class = "table table-dark table-hover table-striped">
+    {% for recipe in recipe_list %}
+        <tr><td>{{ recipe.title() }} - <a href="/delete/{{ recipe }}" class="btn btn-danger"> Delete</a></td></tr>
+    {% endfor %}
+    </table>
+    <br>
 
-  <a href="{{ url_for('logout') }}">Log-out</a>
+    {% endblock %}
 </body>
 </html>

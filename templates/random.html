@@ -3,24 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Random Recipe Picker</title>
+        <style>
+        .containerPic {
+            position: relative;
+            /*width: 50%;*/
+             width:600px;
+             height:225px;
+        }
+
+        .image {
+            display: block;
+            /*width: 100%;*/
+            /*height: auto;*/
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 225px;
+          width: 600px;
+          opacity: 0;
+          transition: .5s ease;
+          background-color: #DB3540;
+        }
+
+        .containerPic:hover .overlay {
+          opacity: 0.8;
+        }
+
+        .recipeText {
+          color: white;
+          font-size: 50px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          text-align: center;
+        }
+    </style>
 </head>
 <body>
     {% extends 'base.html' %}
     {% block content %}
     <h1>Random Recipe Picker</h1>
     <h3>Unsure what to have for supper tonight? Let us pick for you!</h3>
+    <hr>
+    <br>
     <form>
-        <input type="submit" id="randomButton" value="Click for Recipe!"></input>
+        <input type="submit" id="randomButton" class="btn btn-outline-danger btn-lg btn-block"value="Click for Recipe!"></input>
     </form>
     <br>
 <!--    <button id="randomButton" onclick="window.location.reload()">Click for Recipe!</button>-->
     {% set random_recipe = recipe_list|random %}
 
 <!--    todo add link to randomly generated recipe -->
-        <img src="/static/images/{{ recipe_dict[random_recipe][1]}}" width="300" height="150">
-        <h3>Random recipe: <a href="/recipe/{{random_recipe}}">{{ random_recipe.title() }}</a></h3>
+<!--        <img src="/static/images/{{ recipe_dict[random_recipe][1]}}" width="300" height="150">-->
+<!--        <h3>Random recipe: <a href="/recipe/{{random_recipe}}">{{ random_recipe.title() }}</a></h3>-->
+    <h3>{{ random_recipe.title() }}</h3>
+    <div class="containerPic">
+            <img src="static/images/{{ recipe_dict[random_recipe][1] }}" class="image rounded float-left" alt="..." width="600" height="225" style="object-fit: cover">
+            <a href="/recipe/{{random_recipe}}">
+                <div class="overlay">
+                <div class="recipeText">{{ random_recipe.title() }}</div>
+                </div>
+            </a>
+        </div>
     <br>
-    <a href="{{ url_for('main_page') }}">Go Home</a>
     {% endblock %}
 
 </body>

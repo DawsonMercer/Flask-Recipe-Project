@@ -58,6 +58,7 @@ class Users(db.Model, UserMixin):
 
 
 @app.route('/delete/<int:id>')
+@login_required
 def delete_user(id):
     user_to_delete = Users.query.get_or_404(id)
     name = None
@@ -78,7 +79,7 @@ def delete_user(id):
 
 class RegisterForm(FlaskForm):
     # todo add Email inside validators list
-    username = StringField("Email", validators=[DataRequired(), Length(min=4, max=20)])
+    username = StringField("Username", validators=[DataRequired(), Length(min=4, max=20)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=1, max=40)])
     submit = SubmitField("Register")
 
@@ -205,11 +206,11 @@ def login():
 @app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    # username = db.session["username"]
-
+    current = current_user.username
+    recipe_list, recipe_dict = read_csv()
     our_users = Users.query.order_by(Users.id)
-    return render_template('dashboard.html', our_users=our_users)
-
+    return render_template('dashboard.html', our_users=our_users, recipe_list=recipe_list, current=current)
+# todo add login and logout messages
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
@@ -250,11 +251,13 @@ def upload_recipe():
 
 
 @app.route("/remove-recipe")
+@login_required
 def remove_recipe():
     recipe_list, recipe_dict = read_csv()
-    return render_template("remove_recipe.html", recipe_list=recipe_list)
+    return redirect(url_for("dashboard", recipe_list=recipe_list))
 
 @app.route("/delete/<recipe>")
+@login_required
 def delete(recipe):
     recipe_list, recipe_dict = read_csv()
     print("recipe to delete is", recipe)

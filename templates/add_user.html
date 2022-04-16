@@ -5,6 +5,8 @@
     <title>Thanks for Registering!</title>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
     {% for message in get_flashed_messages() %}
 <!--        fixme this is bootstrap to be added in later-->
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -28,21 +30,21 @@
         <a href="{{ url_for('main_page') }}">Go Home</a>
         <a href="{{ url_for('add_user') }}">Add another user</a>
     {% else %}
-        <h1>Add a User:</h1>
         <br>
         <div class="shadow p-3 mb-5 bg-body rounded">
+        <h1>Add a User:</h1><hr><br>
             <form method = "POST">
                 {{ form.hidden_tag() }}
 
                 {{ form.username.label }}
 
                 {{ form.username() }}
-                <br>
+                <br><br>
                 {{ form.password.label }}
 
                 {{ form.password() }}
                 <br>
-
+                <br>
                 {{ form.submit() }}
             </form>
         </div>
@@ -50,15 +52,15 @@
         <br>
         <br>
         <br>
-        <p>Current Usernames:</p>
+        <p>Current Taken Usernames:</p>
         <table class = "table table-dark table-hover table-striped">
         {% for our_user in our_users %}
             <tr><td>{{ our_user.id }}: {{ our_user.username }}</td></tr>
         {% endfor %}
         </table><br><br>
-        <a href="{{ url_for('main_page') }}">Go Home bbb</a>
-        <a href="{{ url_for('dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('login') }}">Log-in</a>
+
+
     {% endif %}
+    {% endblock %}
 </body>
 </html>

@@ -15,8 +15,8 @@
         {{ form.password }}
         {{ form.submit }}
     </form><br><br>
-    <a href="{{ url_for('main_page') }}">Go Home</a>
-    <p>Don't have an account? <a href="{{ url_for('add_user') }}">Register Now</a></p>
+    <br>
+    <p>Don't have an account? <a href="{{ url_for('add_user') }}" class="btn btn-info">Register Now</a></p>
     {% endblock %}
 
 </body>
