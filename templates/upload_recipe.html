@@ -3,37 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload Recipe</title>
+    <style>
+        span{
+            color: #DB3540;
+        }
+    </style>
 </head>
 <body>
     {% extends 'base.html' %}
     {% block content %}
     <h2>Upload your very own recipe:</h2>
     <form id="recipe_form" action="{{ url_for('upload_recipe') }}" enctype="multipart/form-data" method="post">
-        <label>Recipe Name:</label>
-        <input type="text" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
-        <span>*</span><br><br>
+        <div class="form-group">
 
-        <label>Description:</label>
-        <input type="text" name="description" id="description" placeholder="Enter a short description">
+        <label for="exampleFormControlInput1">Recipe Name:</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
         <span>*</span><br><br>
+        </div>
 
-        <label>List ingredients:</label>
-        <textarea name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'"></textarea>
+        <div class="form-group">
+        <label for="exampleFormControlInput5">Description:</label>
+        <input type="text" class="form-control" id="exampleFormControlInput5" name="description"  placeholder="Enter a short description">
+        <span>*</span><br><br>
+        </div>
+
+        <div class="form-group">
+        <label for="exampleFormControlTextarea1">List ingredients:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'
+example: cherry tomatoes-whole wheat flour- 1/2 cup of butter" rows="7" cols="50"></textarea>
 <!--        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">-->
         <span>*</span><br><br>
+        </div>
 
-        <label>Prep instructions:</label>
-        <input type="text" name="prepare" id="prepare" placeholder="How to prepare?">
+        <div class="form-group">
+        <label for="exampleFormControlInput2">Prep instructions:</label>
+        <input type="text" class="form-control" id="exampleFormControlInput2" name="prepare" id="prepare" placeholder="How to prepare?">
         <span>*</span><br><br>
+        </div>
 
-        <label>Server Size:</label>
-        <input type="text" name="servings" id="servings" placeholder="Enter servings">
+        <div class="form-group">
+        <label for="exampleFormControlInput3">Server Size:</label>
+        <input type="text" class="form-control" id="exampleFormControlInput3" name="servings" id="servings" placeholder="Enter servings">
         <span>*</span><br><br>
+        </div>
 
-        <input type="file" name="recipe_image" id="recipe_image">
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="recipe_image" id="recipe_image">
         <span>*</span><br><br>
+        </div>
 
-        <input type="button" id="submitButton" value="Submit recipe">
+        <input type="button" class="btn btn-primary" id="submitButton" value="Submit recipe">
+
 
     </form>
     <br>
