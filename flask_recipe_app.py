@@ -53,7 +53,7 @@ class Users(db.Model, UserMixin):
 
     #creat a string
     def __repr__(self):
-        return '<Name %r>' % self.name
+        return '<Name %r>' % self.username
 
 
 
@@ -112,7 +112,7 @@ def add_user():
         db.session.add(new_user)
         db.session.commit()
         our_users = Users.query.order_by(Users.id)
-        return redirect(url_for("login"))
+        return redirect(url_for("dashboard"))
     our_users = Users.query.order_by(Users.id)
     return render_template("add_user.html", form=form, our_users=our_users)
 
@@ -137,8 +137,8 @@ def main_page():
 @app.route("/view-all")
 def view_all():
     recipe_list, recipe_dict = read_csv()
-    print(recipe_list)
-    print(recipe_dict)
+    # print(recipe_list)
+    # print(recipe_dict)
     return render_template("viewAll.html", recipe_list=recipe_list, recipe_dict=recipe_dict)
 
 @app.route("/next/<string:recipe_name>")
@@ -172,7 +172,7 @@ def prev_recipe(recipe_name):
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
     recipe_list, recipe_dict = read_csv()
-    print(recipe_list)
+    # print(recipe_list)
     if(recipe_name in recipe_list):
         current_recipe = recipe_dict[recipe_name]
         ingredients = current_recipe[2].split("-")
@@ -195,6 +195,11 @@ def pick_random():
 @app.route("/log-in", methods=['GET', 'POST'])
 def login():
     form = LogInForm()
+    print(current_user)
+    # logged_in_user = current_user.username
+    if current_user.is_authenticated:
+         return redirect(url_for('dashboard'))
+
     if form.validate_on_submit():
         user = Users.query.filter_by(username = form.username.data).first()
         if user:
@@ -267,7 +272,7 @@ def delete(recipe):
     recipe_list, recipe_dict = read_csv()
     print("recipe to delete is", recipe)
     print("recipe list", recipe_list)
-    print("recipe dict", recipe_dict)
+    # print("recipe dict", recipe_dict)
     try:
         if recipe in recipe_list and recipe in recipe_dict:
             remove = recipe_list.index(recipe)
@@ -297,8 +302,8 @@ def read_csv():
         for row in reader:
             recipe_dict[row[0]] = [row[1], row[2], row[3], row[4], row[5]]
             recipe_list.append(row[0])
-            print(recipe_list)
-            print(recipe_dict)
+            # print(recipe_list)
+            # print(recipe_dict)
         return recipe_list, recipe_dict
 
 
