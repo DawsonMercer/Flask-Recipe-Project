@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <style>
+        body{
+
+        }
+
+    </style>
 </head>
 <body>
     {% extends 'base.html' %}
@@ -11,12 +17,12 @@
     <hr>
     <br>
     <h3>Delete Users Below:</h3>
-    <table class = "table table-dark table-hover table-striped">
+    <ul class = "list-group">
         {% for our_user in our_users %}
-            <tr><td>{{ our_user.id }} - {{ our_user.username }}
-                     <a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></td></tr>
+            <li class="list-group-item">{{ our_user.id }} - {{ our_user.username }}
+                <div class="text-right"><a href="{{ url_for('delete_user', id=our_user.id)}}" class="btn btn-danger">Delete</a></div></li>
         {% endfor %}
-        </table>
+        </ul>
     <br>
         <a href="{{ url_for('add_user') }}" class="btn btn-secondary">Add another user</a>
     <br>

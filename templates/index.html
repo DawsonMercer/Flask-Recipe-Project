@@ -24,6 +24,17 @@
             background-size: cover;
 
         }
+        #parallex-image3{
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0)),url("static/images/food.jpg");
+            height: 500px;
+            margin-bottom: 50px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+
         h1{
             /*font-family: "Comic Sans MS", "Comic Sans", cursive;*/
             font-size: 100px;
@@ -58,21 +69,33 @@
         </strong>
 
     </div>
-
-    <a href="/view-all"><div id = "parallex-image2">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae congue eu consequat ac. Adipiscing elit duis tristique sollicitudin nibh. Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam. Phasellus vestibulum lorem sed risus ultricies tristique nulla.</p>
+    <br>
+    <br>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus.</p>
+    <a href="/view-all" style="text-decoration: none;"><div id = "parallex-image2">
         <div class="row h-100">
-            <div class="col-md-12 align-self-center">
-                <h1 class="text-center">View all recipes!</h1>
+            <div class="col-md-12 align-self-center" style="background: #FDFFFE">
+                <h1 class="text-center" style="color: black">View all recipes!</h1>
 <!--                <hr id="dotted">-->
-                <h3 class="text-center">- or upload your own! -</h3>
+                <h3 class="text-center" style="color: black">- or upload your own! -</h3>
 
             </div>
         </div>
     </div></a>
 
-    <h1>Recipe Home Page</h1>
-    <h2>Welcome to dawson's page</h2>
-    <img src="static/images/general.jpg" width="800" height="400"><br>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <a href="/pick-random" style="text-decoration: none;"><div id = "parallex-image3">
+        <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+                <h1 class="text-center" style="color: white">Random Recipe Picker</h1>
+<!--                <hr id="dotted">-->
+                <h3 class="text-center" style="color: white">- Let us choose for you! -</h3>
+
+            </div>
+        </div>
+    </div></a>
 
     <a href="{{url_for('view_all')}}">View all recipes</a>
     <a href="{{url_for('pick_random')}}">Pick Random</a>

@@ -7,12 +7,18 @@
         span{
             color: #DB3540;
         }
+        body{
+            background-image: url("static/images/whitebackground.png");
+            background-attachment: fixed;
+
+        }
     </style>
 </head>
 <body>
     {% extends 'base.html' %}
     {% block content %}
     <h2>Upload your very own recipe:</h2>
+    <br>
     <form id="recipe_form" action="{{ url_for('upload_recipe') }}" enctype="multipart/form-data" method="post">
         <div class="form-group">
 
@@ -30,7 +36,7 @@
         <div class="form-group">
         <label for="exampleFormControlTextarea1">List ingredients:</label>
         <textarea class="form-control" id="exampleFormControlTextarea1" name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'
-example: cherry tomatoes-whole wheat flour- 1/2 cup of butter" rows="7" cols="50"></textarea>
+example: cherry tomatoes-whole wheat flour-1/2 cup of butter" rows="7" cols="50"></textarea>
 <!--        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">-->
         <span>*</span><br><br>
         </div>
@@ -48,7 +54,7 @@ example: cherry tomatoes-whole wheat flour- 1/2 cup of butter" rows="7" cols="50
         </div>
 
         <div class="form-group">
-            <label for="exampleFormControlFile1">Example file input</label>
+            <label for="exampleFormControlFile1">Add Image: </label>
         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="recipe_image" id="recipe_image">
         <span>*</span><br><br>
         </div>
