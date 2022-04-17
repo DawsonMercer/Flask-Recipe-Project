@@ -8,7 +8,7 @@
             color: #DB3540;
         }
         body{
-            background-image: linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0)),url("static/images/flat-lay5.jpg");
+            background-image: linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0)),url("static/images/flat-lay2.jpg");
             background-attachment: fixed;
 
         }
@@ -19,43 +19,43 @@
     {% block content %}
     <h2>Upload your very own recipe:</h2>
     <br>
-    <form id="recipe_form" action="{{ url_for('upload_recipe') }}" enctype="multipart/form-data" method="post">
+    <form id="recipe_form" action="{{ url_for('upload_recipe') }}" accept=".png, .jpg, .jpeg" enctype="multipart/form-data" method="post">
         <div class="form-group">
 
-        <label for="exampleFormControlInput1">Recipe Name:</label>
-        <input type="text" class="form-control" id="exampleFormControlInput1" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
+        <label for="recipe_name">Recipe Name:</label>
+        <input type="text" class="form-control" id="recipe_name" name="recipe_name" id="recipe_name" placeholder="Enter recipe name">
         <span>*</span><br><br>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlInput5">Description:</label>
-        <input type="text" class="form-control" id="exampleFormControlInput5" name="description"  placeholder="Enter a short description">
+        <label for="description">Description:</label>
+        <input type="text" class="form-control" id="description" name="description"  placeholder="Enter a short description">
         <span>*</span><br><br>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlTextarea1">List ingredients:</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'
+        <label for="recipe_ingredients">List ingredients:</label>
+        <textarea class="form-control" id="recipe_ingredients" name="recipe_ingredients" id="recipe_ingredients" placeholder="Please separate all ingredients with a '-'
 example: cherry tomatoes-whole wheat flour-1/2 cup of butter" rows="7" cols="50"></textarea>
 <!--        <input type="text" name="recipe_ingredients" id="recipe_ingredients" placeholder="List the ingredients. Separate ingredients with a '-'">-->
         <span>*</span><br><br>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlInput2">Prep instructions:</label>
-        <input type="text" class="form-control" id="exampleFormControlInput2" name="prepare" id="prepare" placeholder="How to prepare?">
+        <label for="prepare">Prep instructions:</label>
+        <input type="text" class="form-control" id="prepare" name="prepare" id="prepare" placeholder="How to prepare?">
         <span>*</span><br><br>
         </div>
 
         <div class="form-group">
-        <label for="exampleFormControlInput3">Server Size:</label>
-        <input type="text" class="form-control" id="exampleFormControlInput3" name="servings" id="servings" placeholder="Enter servings">
+        <label for="servings">Server Size:</label>
+        <input type="text" class="form-control" id="servings" name="servings" id="servings" placeholder="Enter servings">
         <span>*</span><br><br>
         </div>
 
         <div class="form-group">
-            <label for="exampleFormControlFile1">Add Image: </label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="recipe_image" id="recipe_image">
+            <label for="recipe_image">Add Image: </label>
+        <input type="file" class="form-control-file" id="recipe_image" onchange="validateFileType()" name="recipe_image" id="recipe_image">
         <span>*</span><br><br>
         </div>
 
@@ -66,6 +66,22 @@ example: cherry tomatoes-whole wheat flour-1/2 cup of butter" rows="7" cols="50"
     <br>
     <br>
     <script src="../static/js/validateForm.js"></script>
+    <script>
+        const validateFileType = ()=>{
+            let fileName = document.getElementById("recipe_image").value;
+            let idxDot = fileName.lastIndexOf(".") + 1;
+            console.log("inside file validator")
+            let extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+                $("#recipe_image").nextElementSibling.textContent = "File Accepted";
+
+            }else{
+                    alert("Only jpg, jpeg and png files are allowed!");
+                    document.getElementById("recipe_image").value = "";
+            }
+        }
+
+    </script>
     {% endblock %}
 </body>
 </html>

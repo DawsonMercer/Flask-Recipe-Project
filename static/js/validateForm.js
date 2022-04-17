@@ -3,24 +3,25 @@
 const $ = selector => document.querySelector(selector);
 
 
+
 const validateForm =() =>{
-    const name = $("#exampleFormControlInput1").value.trim().toLowerCase();
-    const description = $("#exampleFormControlInput5");
-    const ingredients = $("#exampleFormControlTextarea1");
-    const prepare = $("#exampleFormControlInput2");
-    const servings = $("#exampleFormControlInput3");
-    const image = $("#exampleFormControlFile1");
+    const name = $("#recipe_name").value.trim().toLowerCase();
+    const description = $("#description");
+    const ingredients = $("#recipe_ingredients");
+    const prepare = $("#prepare");
+    const servings = $("#servings");
+    const image = $("#recipe_image");
 
     let formIsComplete = true;
     let msg = "";
     if(name === ""){
-        $("#exampleFormControlInput1").nextElementSibling.textContent = "Required section.";
+        $("#recipe_name").nextElementSibling.textContent = "Required section.";
         msg +="Enter recipe name\n";
         formIsComplete = false;
     }else{
-        $("#exampleFormControlInput1").nextElementSibling.textContent = "*";
+        $("#recipe_name").nextElementSibling.textContent = "*";
     }
-    $("#exampleFormControlInput1").value= name;
+    $("#recipe_name").value= name;
 
     if(description.value === ""){
         description.nextElementSibling.textContent = "Required section.";
@@ -72,5 +73,6 @@ const validateForm =() =>{
 
 document.addEventListener("DOMContentLoaded",()=>{
     $("#submitButton").addEventListener("click", validateForm);
+    // $("#recipe_image").addEventListener("onchange", validateFileType);
 
 });
