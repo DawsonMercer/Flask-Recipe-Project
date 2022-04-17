@@ -10,8 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 
-# TODO HASH PASSOWRDS
-# TODO ADD LOG IN FEATURE sql?
+
 # TODO ADD FILE VERIFICATION FOR PHOTO
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -56,6 +55,16 @@ class Users(db.Model, UserMixin):
     def __repr__(self):
         return '<Name %r>' % self.name
 
+    def validate_email(self, field):
+        if self._user is None:
+            raise ValidationError(_("E-Mail not recognized"))
+
+    def validate_password(self, field):
+        if self._user is None:
+            raise ValidationError()  # just to be sure
+        if not self._user.validate_password(self.password.data):  # passcheck embedded into user model
+            raise ValidationError(_("Password incorrect"))
+
 
 @app.route('/delete/<int:id>')
 @login_required
@@ -78,7 +87,6 @@ def delete_user(id):
 
 
 class RegisterForm(FlaskForm):
-    # todo add Email inside validators list
     username = StringField("Username", validators=[DataRequired(), Length(min=4, max=20)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=1, max=40)])
     submit = SubmitField("Register")
@@ -87,13 +95,15 @@ class RegisterForm(FlaskForm):
         existing_user_username = Users.query.filter_by(username=username.data).first()
 
         if existing_user_username:
+            flash("Username already exists.")
             raise ValidationError("That username already exists. Please choose another")
 
 class LogInForm(FlaskForm):
-    # todo add Email inside validators list
     username = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
+
+
 
 
 # creat form class
@@ -200,6 +210,8 @@ def login():
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
                 return redirect(url_for('dashboard'))
+            else:
+                flash("Invalid Username or password")
     # add functionality and redirect to main page for log in
     return render_template("login.html", form=form)
 
