@@ -12,11 +12,12 @@
         <p>Username:</p>
         {{ form.hidden_tag() }}
         {{ form.username }}
+        <p>Password:</p>
         {{ form.password }}
         {{ form.submit }}
     </form><br><br>
     <br>
-    <p>Don't have an account? <a href="{{ url_for('add_user') }}" class="btn btn-info">Register Now</a></p>
+    <p>Don't have an account? <a href="{{ url_for('add_user') }}" class="btn btn-outline-success">Register Now</a></p>
     {% endblock %}
 
 </body>

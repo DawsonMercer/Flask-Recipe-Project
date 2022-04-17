@@ -36,7 +36,11 @@
       </ul>
       <form class="d-flex">
         {% if current_user.is_authenticated %}
-          <a class="btn btn-outline-success" href="{{url_for('dashboard')}}">User Dashboard</a>
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="">Hello, {{current}}!</a>-->
+<!--        </li>-->
+          <p style="color: white"><strong>Hello, {{ current_user.username }}!&emsp;&emsp;</strong></p>
+          <a class="btn btn-outline-success" href="{{url_for('dashboard')}}">User Dashboard</a>&emsp;
         {% endif %}
         {% if current_user.is_authenticated %}
           <a class="btn btn-outline-secondary" href="{{url_for('logout')}}">Log-Out</a>
