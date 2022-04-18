@@ -14,6 +14,7 @@ from flask_bcrypt import Bcrypt
 Advanced Python Term Project
 Recipe Web App with a Log-in system and user database
 Hosted on AWS
+
 April 18, 2022
 '''
 app = Flask(__name__)
