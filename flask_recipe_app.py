@@ -5,24 +5,20 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, ValidationError, Length
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 
 
-# TODO ADD FILE VERIFICATION FOR PHOTO
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-# recipe_list = []
-# recipe_dict = {}
 
-#venv\Scripts\activate
-#$env:FLASK_APP = "flask_recipe_app"
+# venv\Scripts\activate
+# $env:FLASK_APP = "flask_recipe_app"
 # $env:FLASK_ENV = "development"
-#flask run
+# flask run
 
-#create a new db
+# create a new db
 # python in terminal
 # from flask_recipe_all import db
 # db.create_all()
@@ -33,8 +29,8 @@ bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 # secret key
 app.config['SECRET_KEY'] = 'my secret key'
+# creating db vairable
 db = SQLAlchemy(app)
-# TODO THIS IS WHERE I LEFT OFF 24:14 IN THE VID - https://www.youtube.com/watch?v=71EU8gnZqZQ
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -48,7 +44,6 @@ def load_user(user_id):
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
-    # date_added = db.Column(db.DateTime, default=datetime.utcnow())
     password = db.Column(db.String(80), nullable=False)
 
     #creat a string
@@ -56,12 +51,10 @@ class Users(db.Model, UserMixin):
         return '<Name %r>' % self.username
 
 
-
 @app.route('/delete/<int:id>')
 @login_required
 def delete_user(id):
     user_to_delete = Users.query.get_or_404(id)
-    name = None
     form = RegisterForm()
     try:
         db.session.delete(user_to_delete)
@@ -73,8 +66,6 @@ def delete_user(id):
         flash("Error deleting User")
         our_users = Users.query.order_by(Users.id)
         return render_template("add_user.html", form=form, our_users=our_users)
-
-
 
 
 class RegisterForm(FlaskForm):
@@ -89,6 +80,7 @@ class RegisterForm(FlaskForm):
             flash("Username already exists.")
             raise ValidationError("That username already exists. Please choose another")
 
+
 class LogInForm(FlaskForm):
     username = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -96,11 +88,11 @@ class LogInForm(FlaskForm):
 
 
 
-
-# creat form class
-class NamerForm(FlaskForm):
-    name = StringField("Name:", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+# fixme this is commented out maybe it will impact the code
+# create form class
+# class NamerForm(FlaskForm):
+#     name = StringField("Name:", validators=[DataRequired()])
+#     submit = SubmitField("Submit")
 
 @app.route("/user/add", methods=['GET', 'POST'])
 def add_user():
@@ -116,24 +108,15 @@ def add_user():
     our_users = Users.query.order_by(Users.id)
     return render_template("add_user.html", form=form, our_users=our_users)
 
-# fixme remove this, jsut for testing
-# @app.route("/name", methods=['GET', 'POST'])
-# def name():
-#     name = None
-#     form = NamerForm()
-#     # validate form
-#     if form.validate_on_submit():
-#         name = form.name.data
-#         form.name.data = ''
-#         flash("Successful account created")
-#     return render_template("name.html", name=name, form=form)
 
+# Main page/Home page of app
 @app.route("/")
 def main_page():
     recipe_list, recipe_dict = read_csv()
     return render_template("index.html")
 
 
+# gets the dict and list and displays all items
 @app.route("/view-all")
 def view_all():
     recipe_list, recipe_dict = read_csv()
@@ -141,6 +124,8 @@ def view_all():
     # print(recipe_dict)
     return render_template("viewAll.html", recipe_list=recipe_list, recipe_dict=recipe_dict)
 
+
+# goes to the next item in the list
 @app.route("/next/<string:recipe_name>")
 def next_recipe(recipe_name):
     recipe_list, recipe_dict = read_csv()
@@ -155,6 +140,7 @@ def next_recipe(recipe_name):
     return render_template("recipe.html", recipe_name=next_recipe, current_recipe=current_recipe, ingredients=ingredients)
 
 
+# goes to the previous item in the list
 @app.route("/prev/<string:recipe_name>")
 def prev_recipe(recipe_name):
     recipe_list, recipe_dict = read_csv()
@@ -169,11 +155,12 @@ def prev_recipe(recipe_name):
     return render_template("recipe.html", recipe_name=prev_recipe, current_recipe=current_recipe, ingredients=ingredients)
 
 
+# bring user to the recipe url if the recipe name is in the list, else error
 @app.route("/recipe/<string:recipe_name>")
 def recipe(recipe_name):
     recipe_list, recipe_dict = read_csv()
     # print(recipe_list)
-    if(recipe_name in recipe_list):
+    if recipe_name in recipe_list:
         current_recipe = recipe_dict[recipe_name]
         ingredients = current_recipe[2].split("-")
 
@@ -183,6 +170,7 @@ def recipe(recipe_name):
         return render_template("error.html")
 
 
+# pick a random recipe from the list and display to user
 @app.route("/pick-random")
 def pick_random():
     recipe_list, recipe_dict = read_csv()
@@ -192,6 +180,7 @@ def pick_random():
     return render_template("random.html", recipe_list=recipe_list, index=index, recipe_dict=recipe_dict)
 
 
+# handle log in
 @app.route("/log-in", methods=['GET', 'POST'])
 def login():
     form = LogInForm()
@@ -210,9 +199,10 @@ def login():
                 flash("Invalid Username or password")
         else:
             flash("Invalid Username or password")
-    # add functionality and redirect to main page for log in
     return render_template("login.html", form=form)
 
+
+# once logged in, allow user to access dashboard
 @app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -220,23 +210,22 @@ def dashboard():
     recipe_list, recipe_dict = read_csv()
     our_users = Users.query.order_by(Users.id)
     return render_template('dashboard.html', our_users=our_users, recipe_list=recipe_list, current=current)
-# todo add login and logout messages
+
+
+# allow users to access log out only once they are logged in
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
-# TODO ADD FILE VERIFICATION FOR PHOTO
-# TODO ADD FILE VERIFICATION FOR PHOTO
-# TODO ADD FILE VERIFICATION FOR PHOTO
-# TODO ADD FILE VERIFICATION FOR PHOTO
-# TODO ADD FILE VERIFICATION FOR PHOTO
-# TODO ADD FILE VERIFICATION FOR PHOTO
 
 app.config["UPLOAD_PATH"] = "static/images"
+IMAGE_TYPES = {"png", "jpg", "jpeg"}
+
+
+# upload a recipe and validate that the image is not blank and is of proper type
 @app.route("/upload-recipe", methods=["GET", "POST"])
-# @app.route("/upload-recipe")
 def upload_recipe():
     if request.method == "POST":
 
@@ -247,25 +236,31 @@ def upload_recipe():
         servings = request.form.get("servings")
         # print(recipe_name,description,recipe_ingredients,servings)
         uploaded_file = request.files["recipe_image"]
+        file_upload_type = uploaded_file.filename.split(".")[-1]
         if uploaded_file.filename != "":
             uploaded_file.save(os.path.join(app.config["UPLOAD_PATH"], uploaded_file.filename))
-            # fixme it adds double csv file i am unsure exactly what is happening here
             recipe_list, recipe_dict = read_csv()
-
             recipe_dict[recipe_name] = [description, uploaded_file.filename, recipe_ingredients, prepare, servings]
             recipe_list.append(recipe_name)
             write_csv(recipe_dict)
+        elif file_upload_type not in IMAGE_TYPES:
+            flash("Image upload must be of type jpg, jpeg, or png")
+            return render_template("upload_recipe.html")
+
         return redirect(url_for("main_page"))
     else:
         return render_template("upload_recipe.html")
 
 
+# if a user is logged in, allow user to remove a recipe
 @app.route("/remove-recipe")
 @login_required
 def remove_recipe():
     recipe_list, recipe_dict = read_csv()
     return redirect(url_for("dashboard", recipe_list=recipe_list))
 
+
+# delete a recipe based on the name of a recipe if it is in the list and if the user is logged in
 @app.route("/delete/<recipe>")
 @login_required
 def delete(recipe):
@@ -285,6 +280,7 @@ def delete(recipe):
         return "Trouble deleting recipe. Try again."
 
 
+# write to csv file in order to update the files
 def write_csv(recipe_dict):
     with open("recipes.csv", "w", newline="") as file:
         writer = csv.writer(file)
@@ -292,8 +288,8 @@ def write_csv(recipe_dict):
             writer.writerow([key, value[0], value[1], value[2], value[3], value[4]])
 
 
+# read in the csv file to make sure the list and dictionaries are up to date
 def read_csv():
-    recipe_images = []
     recipe_list = []
     recipe_dict = {}
     with open("recipes.csv", newline="") as file:

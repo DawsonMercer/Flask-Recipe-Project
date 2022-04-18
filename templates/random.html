@@ -52,11 +52,12 @@
     {% block content %}
     <h1>Random Recipe Picker</h1>
     <h3>Unsure what to have for supper tonight? Let us pick for you!</h3>
+    <form>
+        <input type="submit" id="randomButton" class="btn btn-outline-danger btn-lg btn-block"value="Generate Random!"></input>
+    </form>
+
     <hr>
     <br>
-    <form>
-        <input type="submit" id="randomButton" class="btn btn-outline-danger btn-lg btn-block"value="Click for Recipe!"></input>
-    </form>
     <br>
 <!--    <button id="randomButton" onclick="window.location.reload()">Click for Recipe!</button>-->
     {% set random_recipe = recipe_list|random %}
@@ -73,7 +74,7 @@
                 </div>
             </a>
         </div>
-    <h4>{{ recipe_dict[random_recipe][0] }}</h4>
+    <h4>{{ recipe_dict[random_recipe][0] }} - Check it out ^</h4>
     <br>
     {% endblock %}
 
