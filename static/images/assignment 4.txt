@@ -1,0 +1,42 @@
+Guest Class
+====================
+- Attribute x1, like "name of the guest":string (only 1)
+=====================
+<<Constructor>>
+Will initialize the name of the guest from one parameter (//name o)
+
+<<Helper>>
+set and get for guest class for all its attributes
+set name
+get name
+-------------------------------------------------------------------------
+
+Hotel Class (1 guest only)
+===================
+- attribute 1, "Name of the hotel": string (David Turner Hotel)
+- attribute 2, "Guest (as an object)": string
+- attribute 3, "Rate per room of the hotel": float
+====================
+<<Constructor>>(only 1 attribute)
+Name of hotel only (David Turner Hotel)
+
+<<Helper>>
+set guest object
+get guest object
+set hotel rate
+get hotel rate
+get hotel name
+--------------------------------------------------------------------------
+
+TestHotel Class (Contains the main method)
+===========================
++ Guest object: string, send "walter cronkite" to constructor
++ Hotel: string, send "Your Name+Hotel" to constructor @ hotel class
+==============================
+<<Helper>>
+set rate attribute for Hotel: float, relates to 2nd attribute hotel class, rate is 99.95 - object method
+set Guest attribute for Hotel: string, relates to 2nd attribute hotel class, use guest object 1st attribute
+NO HARDCODING Print guest register using object method to print guest register (point 5 under TestHotel Class)
+NO HARDCODING Print the name of the guest in the hotel as shown in output
+----------------------------------------------------------------------------------------------------------------------
+
