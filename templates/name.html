@@ -6,7 +6,6 @@
 </head>
 <body>
     {% for message in get_flashed_messages() %}
-<!--        fixme this is bootstrap to be added in later-->
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ message }}
         </div>

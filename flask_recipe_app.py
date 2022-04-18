@@ -9,7 +9,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 
-
+'''
+@author Dawson mercer
+Advanced Python Term Project
+Recipe Web App with a Log-in system and user database
+Hosted on AWS
+April 18, 2022
+'''
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
@@ -18,7 +24,7 @@ bcrypt = Bcrypt(app)
 # $env:FLASK_ENV = "development"
 # flask run
 
-# create a new db
+# to create a new db
 # python in terminal
 # from flask_recipe_all import db
 # db.create_all()
@@ -51,6 +57,7 @@ class Users(db.Model, UserMixin):
         return '<Name %r>' % self.username
 
 
+# delete the user based on their user id
 @app.route('/delete/<int:id>')
 @login_required
 def delete_user(id):
@@ -68,6 +75,7 @@ def delete_user(id):
         return render_template("add_user.html", form=form, our_users=our_users)
 
 
+# handle registration form usign what the forms
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=4, max=20)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=1, max=40)])
@@ -81,19 +89,14 @@ class RegisterForm(FlaskForm):
             raise ValidationError("That username already exists. Please choose another")
 
 
+# handle user login
 class LogInForm(FlaskForm):
     username = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
 
 
-
-# fixme this is commented out maybe it will impact the code
-# create form class
-# class NamerForm(FlaskForm):
-#     name = StringField("Name:", validators=[DataRequired()])
-#     submit = SubmitField("Submit")
-
+# add a user to the database if the form is valid
 @app.route("/user/add", methods=['GET', 'POST'])
 def add_user():
     form = RegisterForm()
@@ -180,14 +183,14 @@ def pick_random():
     return render_template("random.html", recipe_list=recipe_list, index=index, recipe_dict=recipe_dict)
 
 
-# handle log in
+# handle log in if user is valid
 @app.route("/log-in", methods=['GET', 'POST'])
 def login():
     form = LogInForm()
     print(current_user)
     # logged_in_user = current_user.username
     if current_user.is_authenticated:
-         return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard'))
 
     if form.validate_on_submit():
         user = Users.query.filter_by(username = form.username.data).first()
